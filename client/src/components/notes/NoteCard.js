@@ -60,6 +60,7 @@ const NoteCard = ({ note, viewMode, onEdit, onDelete, onSummarize }) => {
   };
 
   const truncateText = (text, maxLength) => {
+    if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   };
@@ -247,10 +248,10 @@ const NoteCard = ({ note, viewMode, onEdit, onDelete, onSummarize }) => {
           )}
 
           {/* Tags */}
-          {note.tags && note.tags.length > 0 && (
+          {Array.isArray(note.tags) && note.tags.length > 0 && (
             <Box sx={{ mb: 2 }}>
               <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                {note.tags.slice(0, isListView ? 6 : 3).map((tag, index) => (
+                {Array.isArray(note.tags) ? note.tags.slice(0, isListView ? 6 : 3).map((tag, index) => (
                   <Chip
                     key={index}
                     label={tag}
@@ -263,8 +264,8 @@ const NoteCard = ({ note, viewMode, onEdit, onDelete, onSummarize }) => {
                       height: 24,
                     }}
                   />
-                ))}
-                {note.tags.length > (isListView ? 6 : 3) && (
+                )) : null}
+                {Array.isArray(note.tags) && note.tags.length > (isListView ? 6 : 3) && (
                   <Chip
                     label={`+${note.tags.length - (isListView ? 6 : 3)}`}
                     size="small"
@@ -376,7 +377,7 @@ const NoteCard = ({ note, viewMode, onEdit, onDelete, onSummarize }) => {
           </MenuItem>
           <MenuItem 
             onClick={handleSummarize}
-            disabled={summarizing || note.content.length < 50}
+            disabled={summarizing || !note.content || note.content.length < 50}
           >
             <SummarizeIcon sx={{ fontSize: 18, mr: 1 }} />
             {summarizing ? 'Summarizing...' : 'AI Summary'}

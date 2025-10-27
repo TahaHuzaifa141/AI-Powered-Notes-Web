@@ -100,8 +100,8 @@ const NotesPage = () => {
         toast.success('Note updated successfully');
       } else {
         // Create new note
-        const response = await notesApi.createNote(noteData);
-        setNotes([response.data.data, ...notes]);
+        await notesApi.createNote(noteData);
+        await fetchNotes();
         toast.success('Note created successfully');
       }
       setDialogOpen(false);
@@ -135,12 +135,12 @@ const NotesPage = () => {
 
   // Filter notes based on search term and selected tags
   const filteredNotes = notes.filter(note => {
-    const matchesSearch = note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         note.content.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    const title = note.title || '';
+    const content = note.content || '';
+    const matchesSearch = title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         content.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesTags = selectedTags.length === 0 || 
                        selectedTags.some(tag => note.tags?.includes(tag));
-    
     return matchesSearch && matchesTags;
   });
 
@@ -239,6 +239,31 @@ const NotesPage = () => {
                       },
                     }}
                   />
+                </Grid>
+                <Grid item xs={12} md={3} sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center' }}>
+                  <Fade in={!loading}>
+                    <Box>
+                      <Fab
+                        color="primary"
+                        variant="extended"
+                        onClick={handleCreateNote}
+                        sx={{
+                          minWidth: 120,
+                          fontWeight: 600,
+                          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          color: '#fff',
+                          boxShadow: '0 4px 16px rgba(102, 126, 234, 0.18)',
+                          '&:hover': {
+                            background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                            boxShadow: '0 6px 24px rgba(102, 126, 234, 0.25)',
+                          },
+                        }}
+                      >
+                        <AddIcon sx={{ mr: 1 }} />
+                        Add Note
+                      </Fab>
+                    </Box>
+                  </Fade>
                 </Grid>
                 <Grid item xs={12} md={3}>
                   <ToggleButtonGroup
