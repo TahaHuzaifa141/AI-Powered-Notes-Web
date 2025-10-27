@@ -81,14 +81,7 @@ Following clean **MVC (Model-View-Controller)** pattern:
 - **Professional Color Palette**
 - **Micro-interactions**
 
-## 📱 Demo
-
-[Add your video demo link here]
 
 ## 🤝 Contributing
 
 Feel free to contribute to this project! Pull requests are welcome.
-
-## 📄 License
-
-MIT License - see LICENSE file for details.
