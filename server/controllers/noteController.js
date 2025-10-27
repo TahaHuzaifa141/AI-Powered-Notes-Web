@@ -126,11 +126,12 @@ const createNote = async (req, res) => {
       });
     }
 
-    const { title, content, tags, category, priority, color } = req.body;
+    const { title, content, tags, category, priority, color, summary } = req.body;
 
     const note = await Note.create({
       title,
       content,
+      summary: summary || '',
       tags: tags || [],
       category: category || 'Other',
       priority: priority || 'Medium',
